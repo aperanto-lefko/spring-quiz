@@ -1,13 +1,20 @@
 package ru.yandex.practicum.quiz.service;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import ru.yandex.practicum.quiz.config.QuizConfig;
 import ru.yandex.practicum.quiz.model.QuizLog;
 
 import java.io.PrintWriter;
 import java.util.List;
+import java.util.Scanner;
 
 @Component
 public class ReportGenerator {
+    private final String quizTitle;
+    public ReportGenerator(@Value("${spring-quiz.title:\"Неназванный тест\"}") String title) {
+        this.quizTitle = title;
+    }
     public void generate(QuizLog quizLog) {
         // Создаём объект PrintWriter, выводящий отчет в консоль
         try (PrintWriter writer = new PrintWriter(System.out)) {
@@ -19,7 +26,8 @@ public class ReportGenerator {
     }
 
     private void write(QuizLog quizLog, PrintWriter writer) {
-        writer.println("Отчет о прохождении теста \"Тест по Spring Framework\".\n");
+
+        writer.println("Отчет о прохождении теста " + quizTitle + ".\n");
         for (QuizLog.Entry entry : quizLog) {
             // Записываем номер вопроса и текст вопроса
             writer.println("Вопрос " + entry.getNumber() + ": " + entry.getQuestion().getText());
@@ -38,9 +46,9 @@ public class ReportGenerator {
             }
             writer.println();
 
-        //Записываем флаг успешности ответа
-        String successFlag = entry.isSuccessful() ? "да" : "нет";
-        writer.println("Содержит правильный ответ: " + successFlag);
+            //Записываем флаг успешности ответа
+            String successFlag = entry.isSuccessful() ? "да" : "нет";
+            writer.println("Содержит правильный ответ: " + successFlag);
 
             // Добавляем пустую строку между записями
             writer.println();
@@ -48,4 +56,3 @@ public class ReportGenerator {
         writer.printf("Всего вопросов: %d\nОтвечено правильно: %d\n", quizLog.total(), quizLog.successful());
     }
 }
-

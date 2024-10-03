@@ -16,6 +16,7 @@ public class QuizApp implements CommandLineRunner {
 
     public static void main(String[] args) {
         SpringApplication.run(QuizApp.class, args);
+
     }
 
     @Override
