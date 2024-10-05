@@ -16,6 +16,8 @@ import ru.yandex.practicum.quiz.service.ReportGenerator;
 @RequiredArgsConstructor
 @ConfigurationPropertiesScan
 public class QuizApp implements CommandLineRunner {
+
+
     private final ConsoleUI ui;
     private final ReportGenerator reportGenerator;
     private final AppConfig config;
